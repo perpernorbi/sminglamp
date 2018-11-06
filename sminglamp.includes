@@ -1,0 +1,5 @@
+app
+include
+/home/esp/Sming/Sming
+/home/esp/Sming/Sming/SmingCore
+/home/esp/Sming/Sming/system/include
