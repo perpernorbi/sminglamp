@@ -8,11 +8,8 @@ GpioPWM::GpioPWM()
 	HW_pwm = new HardwarePWM(pins, pinCount);
 	HW_pwm->setPeriod(102);
     debugf("pwm initialized. Max duty: %d", HW_pwm->getMaxDuty());
-	// Setting PWM values on 8 different pins
-	HW_pwm->analogWrite(2, 0);
-    HW_pwm->analogWrite(15, 0);
-	HW_pwm->analogWrite(13, 0);
-	HW_pwm->analogWrite(12, 0);
+    for (auto& pinNumber: pins)
+        HW_pwm->analogWrite(pinNumber, 0);
 }
 
 GpioPWM::~GpioPWM()
