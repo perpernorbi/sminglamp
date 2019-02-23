@@ -2,14 +2,13 @@
 #define PWMWEBSERVER_H
 #include <SmingCore/SmingCore.h>
 
-class PwmWebServer
-{
+class PwmWebServer {
 public:
-    PwmWebServer();
-	void init();
+  PwmWebServer();
+  void init();
 
 private:
-	HttpServer server;
+  HttpServer server;
 };
 
 #endif // PWMWEBSERVER_H
