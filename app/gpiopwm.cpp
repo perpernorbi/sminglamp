@@ -14,9 +14,10 @@ GpioPWM::GpioPWM() {
 
 GpioPWM::~GpioPWM() { delete HW_pwm; }
 
-void GpioPWM::setDuty(uint8 pin, uint32 duty) {
-  if (pin >= pinCount) {
-    debug_e("Pin id %d exeeds configured pin count %d", pin, pinCount);
+void GpioPWM::setDuty(uint8 channel, uint32 duty) {
+  if (channel >= pinCount) {
+    debug_e("Channel number %u exeeds configured channel count %u", channel,
+            pinCount);
     return;
   }
   if (duty > HW_pwm->getMaxDuty()) {
@@ -24,5 +25,5 @@ void GpioPWM::setDuty(uint8 pin, uint32 duty) {
             HW_pwm->getMaxDuty());
     duty = HW_pwm->getMaxDuty();
   }
-  HW_pwm->analogWrite(pins[pin], duty);
+  HW_pwm->analogWrite(pins[channel], duty);
 }
