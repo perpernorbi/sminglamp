@@ -1,7 +1,7 @@
 #include "pwmwebserver.h"
 #include "gpiopwm.h"
 
-PwmWebServer::PwmWebServer(PwmChannelAndDutyConsumer &pwm) : pwm(pwm) {}
+PwmWebServer::PwmWebServer(PwmInterface &pwm) : pwm(pwm) {}
 
 void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
   if (request.method == HTTP_GET) {

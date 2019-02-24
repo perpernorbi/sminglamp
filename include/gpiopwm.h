@@ -1,11 +1,11 @@
 #ifndef GPIOPWM_H
 #define GPIOPWM_H
 #include "SmingCore/HardwarePWM.h"
-#include "pwmchannelanddutyconsumer.h"
+#include "pwminterface.h"
 #include <user_config.h>
 //#include <stdint.h>
 
-class GpioPWM : public PwmChannelAndDutyConsumer {
+class GpioPWM : public PwmInterface {
 private:
   static const uint8_t pins[];
   static const size_t pinCount;

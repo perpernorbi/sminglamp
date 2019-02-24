@@ -1,18 +1,18 @@
 #ifndef PWMWEBSERVER_H
 #define PWMWEBSERVER_H
-#include "pwmchannelanddutyconsumer.h"
+#include "pwminterface.h"
 #include <SmingCore/SmingCore.h>
 
 class PwmWebServer {
 public:
-  PwmWebServer(PwmChannelAndDutyConsumer &pwm);
+  PwmWebServer(PwmInterface &pwm);
   void init();
   void onAjaxAsArray(HttpRequest &request, HttpResponse &response);
   void onAjaxGetChannelCount(HttpRequest &request, HttpResponse &response);
 
 private:
   HttpServer server;
-  PwmChannelAndDutyConsumer &pwm;
+  PwmInterface &pwm;
 };
 
 #endif // PWMWEBSERVER_H
