@@ -1,10 +1,12 @@
+#include "gpiopwm.h"
 #include "pwmwebserver.h"
 #include <user_config.h>
 
 static const char *WIFI_SSID = "username"; // Put you SSID and Password here
 static const char *WIFI_PWD = "password";
 
-PwmWebServer pwmWebServer;
+GpioPWM gpioPWM;
+PwmWebServer pwmWebServer(gpioPWM);
 
 void gotIP(IPAddress ip, IPAddress netmask, IPAddress gateway) {
   pwmWebServer.init();
