@@ -15,7 +15,9 @@ public:
   GpioPWM();
   ~GpioPWM();
 
+  uint32 getDuty(uint8 channel) const;
   void setDuty(uint8 channel, uint32 duty);
+  uint8 getChannelCount() const;
 };
 
 #endif // GPIOPWM_H

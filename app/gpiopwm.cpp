@@ -27,3 +27,9 @@ void GpioPWM::setDuty(uint8 channel, uint32 duty) {
   }
   HW_pwm->analogWrite(pins[channel], duty);
 }
+
+uint8 GpioPWM::getChannelCount() const { return pinCount; }
+
+uint32 GpioPWM::getDuty(uint8 channel) const {
+  return HW_pwm->getDuty(pins[channel]);
+}
