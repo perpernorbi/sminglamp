@@ -1,6 +1,11 @@
+app/buttontimer.cpp
+app/debugbuttoneventhandler.cpp
 app/gpiopwm.cpp
 app/main.cpp
 app/pwmwebserver.cpp
+include/buttoneventhandler.h
+include/buttontimer.h
+include/debugbuttoneventhandler.h
 include/gpiopwm.h
 include/pwminterface.h
 include/pwmwebserver.h

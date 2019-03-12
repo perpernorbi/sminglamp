@@ -1,3 +1,5 @@
+#include "buttontimer.h"
+#include "debugbuttoneventhandler.h"
 #include "gpiopwm.h"
 #include "pwmwebserver.h"
 #include <user_config.h>
@@ -7,6 +9,8 @@ static const char *WIFI_PWD = "password";
 
 GpioPWM gpioPWM;
 PwmWebServer pwmWebServer(gpioPWM);
+DebugButtonEventHandler buttonEventHandler;
+ButtonTimer buttonHandler(buttonEventHandler);
 
 void gotIP(IPAddress ip, IPAddress netmask, IPAddress gateway) {
   pwmWebServer.init();
