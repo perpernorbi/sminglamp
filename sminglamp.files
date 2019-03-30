@@ -1,16 +1,10 @@
+include/button.h
 temp
-app/buttontimer.cpp
-app/cyclingbuttoneventhandler.cpp
-app/debugbuttoneventhandler.cpp
 app/gpiopwm.cpp
 app/main.cpp
 app/pwmstatemachine.cpp
 app/pwmwebserver.cpp
-include/buttoneventhandler.h
-include/buttontimer.h
 include/cyclingStateMachine.h
-include/cyclingbuttoneventhandler.h
-include/debugbuttoneventhandler.h
 include/gpiopwm.h
 include/pwminterface.h
 include/pwmwebserver.h

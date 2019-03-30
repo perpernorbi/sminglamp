@@ -1,6 +1,5 @@
-#include "buttontimer.h"
+#include "button.h"
 #include "cyclingStateMachine.h"
-#include "cyclingbuttoneventhandler.h"
 #include "gpiopwm.h"
 #include "pwmwebserver.h"
 #include <user_config.h>
@@ -9,13 +8,20 @@
 static const char *WIFI_SSID = "username"; // Put you SSID and Password here
 static const char *WIFI_PWD = "password";
 
-GpioPWM gpioPWM;
-PwmWebServer pwmWebServer(gpioPWM);
-CyclingStateMachine<std::vector<uint32>> states;
-CyclingButtonEventHandler buttonEventHandler(states);
-ButtonTimer buttonHandler(buttonEventHandler);
+static GpioPWM gpioPWM;
+static PwmWebServer pwmWebServer(gpioPWM);
+static CyclingStateMachine<std::vector<uint32>> states;
 
-std::vector<uint32> stateDescription;
+static const struct Button::Event shortPress(Button::State::pressedFor, 0, 500,
+                                             [](int i) { states.next(); });
+
+static const struct Button::Event resetPress(Button::State::pressingSince, 1500,
+                                             1500,
+                                             [](int i) { states.reset(); });
+
+static const Button::ButtonTimer<0, 50, &shortPress, &resetPress> buttonTimer;
+static std::vector<uint32> stateDescription;
+
 void gotIP(IPAddress ip, IPAddress netmask, IPAddress gateway) {
   pwmWebServer.init();
 
@@ -34,7 +40,7 @@ void init() {
   WifiStation.config(WIFI_SSID, WIFI_PWD);
   WifiAccessPoint.enable(false);
   WifiEvents.onStationGotIP(gotIP);
-  stateDescription = {0, 20, 500, 1000};
+  stateDescription = {0, 20, 500, 1000, 2500};
   states.setStates(stateDescription);
   states.setCallback(
       std::bind(&GpioPWM::setDuty, &gpioPWM, (uint8)0, std::placeholders::_1));
