@@ -1,21 +1,21 @@
 #include "pwmwebserver.h"
+#include "JsonArrayStream.h"
 #include "gpiopwm.h"
 
 PwmWebServer::PwmWebServer(PwmInterface &pwm) : pwm(pwm) {}
 
 void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
   if (request.method == HTTP_GET) {
-    JsonObjectStream *jsonObjectStream = new JsonObjectStream();
-    auto &root = jsonObjectStream->getRoot();
-    auto &array = root.createNestedArray("pwm");
+    auto *jsonArrayStream = new JsonArrayStream();
+    auto &array = jsonArrayStream->getRoot();
     for (size_t i = 0; i < pwm.getChannelCount(); ++i)
       array.add(pwm.getDuty(i));
-    response.sendDataStream(jsonObjectStream, ContentType::toString(MIME_JSON));
+    response.sendDataStream(jsonArrayStream, ContentType::toString(MIME_JSON));
   } else if (request.method == HTTP_POST) {
     StaticJsonBuffer<200> jsonBuffer;
-    JsonObject &root = jsonBuffer.parseObject(request.getBody());
-    for (size_t i = 0; i < root["pwm"].asArray().size(); ++i) {
-      pwm.setDuty(i, (uint32)root["pwm"][i]);
+    auto &root = jsonBuffer.parseArray(request.getBody());
+    for (size_t i = 0; i < root.size(); ++i) {
+      pwm.setDuty(i, static_cast<uint32>(root[i]));
     }
     response.sendString("");
   }
