@@ -10,13 +10,13 @@ class TestPwmApi(unittest.TestCase):
 
     def test_channelCount(self):
         response = requests.get(self.endpoint + "/pwm/channelCount", timeout=1)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["channelCount"], 4)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(4, response.json()["channelCount"])
 
     def test_pwm(self):
         test_data = [500, 1000, 1500, 2000]
         response = requests.post(self.endpoint + "/pwm/asArray", json=test_data, timeout=5)
-        self.assertEqual(response.status_code, 200);
+        self.assertEqual(200, response.status_code);
 
         response = requests.get(self.endpoint + "/pwm/asArray", timeout=5)
         self.assertEqual(test_data, response.json())
