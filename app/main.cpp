@@ -50,5 +50,7 @@ void init() {
   states.setStates(stateDescription);
 
   states.setCallback(
-      std::bind(&GpioPWM_t::setState, &gpioPWM, std::placeholders::_1));
+      std::bind(static_cast<void (GpioPWM_t::*)(const GpioPWM_t::State &)>(
+                    &GpioPWM_t::setDuty),
+                &gpioPWM, std::placeholders::_1));
 }

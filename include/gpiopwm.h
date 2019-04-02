@@ -4,7 +4,9 @@
 #include "pwminterface.h"
 #include <user_config.h>
 
-template <uint8_t... pins_template> class GpioPWM : public PwmInterface {
+template <uint8_t... pins_template>
+class GpioPWM : public PwmInterface,
+                PwmArrayInterface<sizeof...(pins_template)> {
 public:
   using State = std::array<uint32, sizeof...(pins_template)>;
   using PinConfig = std::array<uint8_t, sizeof...(pins_template)>;
@@ -42,10 +44,12 @@ public:
     HW_pwm->analogWrite(pins[channel], duty);
   }
 
-  void setState(const State &state) {
+  void setDuty(const State &state) {
     for (size_t i = 0; i < state.size(); ++i)
       setDuty(i, state[i]);
   }
+
+  State getDuty() { return {HW_pwm->getDuty(pins_template)...}; }
 
   uint8 getChannelCount() const { return pins.size(); }
 };
