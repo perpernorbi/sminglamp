@@ -24,7 +24,7 @@ public:
       HW_pwm->analogWrite(pinNumber, 0);
   }
 
-  ~GpioPWM() { delete HW_pwm; }
+  virtual ~GpioPWM() { delete HW_pwm; }
 
   uint32 getDuty(uint8 channel) const override {
     return HW_pwm->getDuty(pins[channel]);
