@@ -44,14 +44,14 @@ public:
     HW_pwm->analogWrite(pins[channel], duty);
   }
 
-  void setDuty(const State &state) {
+  void setDuty(const State &state) override {
     for (size_t i = 0; i < state.size(); ++i)
       setDuty(i, state[i]);
   }
 
-  State getDuty() { return {HW_pwm->getDuty(pins_template)...}; }
+  State getDuty() override { return {HW_pwm->getDuty(pins_template)...}; }
 
-  uint8 getChannelCount() const { return pins.size(); }
+  uint8 getChannelCount() const override { return pins.size(); }
 };
 
 template <uint8_t... pins_template>
