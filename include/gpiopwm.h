@@ -8,11 +8,11 @@ template <uint8_t... pins_template>
 class GpioPWM : public PwmInterface,
                 PwmArrayInterface<sizeof...(pins_template)> {
 public:
-  using State = std::array<uint32, sizeof...(pins_template)>;
-  using PinConfig = std::array<uint8_t, sizeof...(pins_template)>;
+  using State = typename PwmArrayInterface<sizeof...(pins_template)>::State;
 
 private:
   HardwarePWM *HW_pwm;
+  using PinConfig = std::array<uint8_t, sizeof...(pins_template)>;
   static constexpr PinConfig pins{pins_template...};
 
 public:
