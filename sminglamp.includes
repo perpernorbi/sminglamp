@@ -1,5 +1,6 @@
 app
 include
-/home/esp/Sming/Sming
-/home/esp/Sming/Sming/SmingCore
-/home/esp/Sming/Sming/system/include
+/home/norbi/project/Sming/Sming
+/home/norbi/project/Sming/Sming/SmingCore
+/home/norbi/project/Sming/Sming/system/include
+.

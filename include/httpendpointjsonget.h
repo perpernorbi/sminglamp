@@ -7,9 +7,10 @@
 template <typename T> class HttpEndpointJsonGet : public HttpEndpoint {
 public:
   using callback_t = std::function<const T(void)>;
-  HttpEndpointJsonGet(const String &endpoint, callback_t callback)
-      : HttpEndpoint(endpoint), callback(callback) {}
+  HttpEndpointJsonGet(const String &endpoint) : HttpEndpoint(endpoint) {}
   virtual ~HttpEndpointJsonGet() {}
+
+  void setCallback(callback_t callback) { this->callback = callback; }
 
 private:
   callback_t callback;
@@ -17,6 +18,8 @@ private:
 protected:
   virtual bool requestHead(HttpRequest &request,
                            HttpResponse &response) override {
+    if (!callback)
+      return false;
     response.code = HTTP_STATUS_OK;
     response.setContentType(ContentType::toString(MIME_JSON));
     return true;
@@ -24,8 +27,8 @@ protected:
 
   virtual bool requestGet(HttpRequest &request,
                           HttpResponse &response) override {
-    const T value = callback();
-    auto *jsonStream = JsonConverter::toJson(value);
+    const T &value = callback();
+    auto *jsonStream = JsonConverter::toJson<T>(value);
     response.sendDataStream(jsonStream);
     return true;
   }

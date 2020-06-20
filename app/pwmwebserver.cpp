@@ -2,9 +2,22 @@
 #include "JsonArrayStream.h"
 #include "gpiopwm.h"
 
-PwmWebServer::PwmWebServer(PwmInterface &pwm) : pwm(pwm) {}
+PwmWebServer::PwmWebServer(PwmInterface &pwm)
+    : pwm(pwm), testEndpoint("/test"),
+      endpointChannelCount("/ajax/pwm/channelCount"),
+      endpointTest("/ajax/test"), endpointSetBool("/ajax/setBool"),
+      endpointSetInt("/ajax/setInt"), endpointSetString("/ajax/setString") {
+  endpointChannelCount.setCallback([&pwm]() { return pwm.getChannelCount(); });
+  endpointTest.setCallback([this]() { return this->get_a_vector(); });
+  endpointSetBool.setCallback(
+      [](bool value) { debugf("got %s", value ? "true" : "false"); });
+  endpointSetInt.setCallback([](int value) { debugf("got %d", value); });
+  endpointSetString.setCallback(
+      [](const String &value) { debugf("got %s", value.c_str()); });
+}
 
 void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
+  debugf("start");
   if (request.method == HTTP_GET) {
     auto *jsonArrayStream = new JsonArrayStream();
     auto &array = jsonArrayStream->getRoot();
@@ -18,25 +31,32 @@ void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
       pwm.setDuty(i, static_cast<uint32>(root[i]));
     }
     response.sendString("");
+    response.code = 200;
   }
+  debugf("Done");
 }
 
-void PwmWebServer::onAjaxGetChannelCount(HttpRequest &request,
-                                         HttpResponse &response) {
-  if (request.method == HTTP_GET) {
-    JsonObjectStream *jsonObjectStream = new JsonObjectStream();
-    auto &root = jsonObjectStream->getRoot();
-    root["channelCount"] = pwm.getChannelCount();
-    response.sendDataStream(jsonObjectStream, ContentType::toString(MIME_JSON));
+std::array<int, 3> PwmWebServer::get_a_vector() {
+  std::array<int, 3> ret;
+  ret[0] = 1;
+  ret[1] = 2;
+  ret[2] = 3;
+  for (auto &i : ret) {
+    debugf("get_a_vector %d", i);
   }
+  return ret;
 }
 
 void PwmWebServer::init() {
   server.listen(80);
   server.addPath("/ajax/pwm/asArray",
                  HttpPathDelegate(&PwmWebServer::onAjaxAsArray, this));
-  server.addPath("/ajax/pwm/channelCount",
-                 HttpPathDelegate(&PwmWebServer::onAjaxGetChannelCount, this));
+  server.addPath(endpointChannelCount.getEndpoint(), endpointChannelCount);
+  server.addPath(testEndpoint.getEndpoint(), testEndpoint);
+  server.addPath(endpointTest.getEndpoint(), endpointTest);
+  server.addPath(endpointSetBool.getEndpoint(), endpointSetBool);
+  server.addPath(endpointSetInt.getEndpoint(), endpointSetInt);
+  server.addPath(endpointSetString.getEndpoint(), endpointSetString);
   server.setBodyParser(ContentType::toString(MIME_JSON), bodyToStringParser);
   //	server.setDefaultHandler(onFile);
 }

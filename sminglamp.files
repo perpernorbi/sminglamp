@@ -6,6 +6,7 @@ include/JsonVariantStream.h
 include/button.h
 include/httpendpoint.h
 include/httpendpointjsonget.h
+include/httpendpointjsonset.h
 include/jsonconverter.h
 temp
 app/main.cpp

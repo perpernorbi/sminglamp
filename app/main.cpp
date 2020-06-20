@@ -3,7 +3,6 @@
 #include "gpiopwm.h"
 #include "pwmwebserver.h"
 #include <user_config.h>
-#include <vector>
 
 static const char *WIFI_SSID = "username"; // Put you SSID and Password here
 static const char *WIFI_PWD = "password";
@@ -26,7 +25,6 @@ static std::vector<GpioPWM_t::State> stateDescription;
 
 void gotIP(IPAddress ip, IPAddress netmask, IPAddress gateway) {
   pwmWebServer.init();
-
   Serial.println("\r\n=== WEB SERVER STARTED ===");
   Serial.println(ip);
   Serial.println("==============================\r\n");

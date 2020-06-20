@@ -16,6 +16,7 @@ void HttpEndpoint::requestDispatcher(HttpRequest &request,
                                      HttpResponse &response) {
   response.code = HTTP_STATUS_INTERNAL_SERVER_ERROR;
   bool success;
+  debugf("before switch %d", request.method);
   switch (request.method) {
   case HTTP_DELETE:
     success = requestDelete(request, response);
@@ -29,6 +30,7 @@ void HttpEndpoint::requestDispatcher(HttpRequest &request,
     success = requestHead(request, response);
     break;
   case HTTP_POST:
+    debugf("post");
     success = requestPost(request, response);
     break;
   case HTTP_PUT:
