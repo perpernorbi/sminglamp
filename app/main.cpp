@@ -4,8 +4,10 @@
 #include "pwmwebserver.h"
 #include <user_config.h>
 
-static const char *WIFI_SSID = "username"; // Put you SSID and Password here
-static const char *WIFI_PWD = "password";
+static const char *WIFI_SSID = "norbi"; // Put you SSID and Password here
+static const char *WIFI_PWD = "S3ful3.3f4rk4";
+// static const char *WIFI_SSID = "norbert"; // Put you SSID and Password here
+// static const char *WIFI_PWD = "internet";
 
 using GpioPWM_t = GpioPWM<2, 15, 13, 12>;
 static GpioPWM_t gpioPWM;
@@ -23,7 +25,9 @@ static const Button::ButtonTimer<0, 50, &shortPress, &resetPress> buttonTimer;
 
 static std::vector<GpioPWM_t::State> stateDescription;
 
-void gotIP(IPAddress ip, IPAddress netmask, IPAddress gateway) {
+static void STAGotIP(IpAddress ip, IpAddress mask, IpAddress gateway) {
+  debugf("GOTIP - IP: %s, MASK: %s, GW: %s\n", ip.toString().c_str(),
+         mask.toString().c_str(), gateway.toString().c_str());
   pwmWebServer.init();
   Serial.println("\r\n=== WEB SERVER STARTED ===");
   Serial.println(ip);
@@ -39,7 +43,7 @@ void init() {
   WifiStation.enable(true);
   WifiStation.config(WIFI_SSID, WIFI_PWD);
   WifiAccessPoint.enable(false);
-  WifiEvents.onStationGotIP(gotIP);
+  WifiEvents.onStationGotIP(STAGotIP);
   stateDescription = {{0, 0, 0, 0},
                       {2500, 0, 0, 0},
                       {0, 2500, 0, 0},

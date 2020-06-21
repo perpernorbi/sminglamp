@@ -15,8 +15,7 @@ HttpEndpoint::operator const HttpPathDelegate &() const {
 void HttpEndpoint::requestDispatcher(HttpRequest &request,
                                      HttpResponse &response) {
   response.code = HTTP_STATUS_INTERNAL_SERVER_ERROR;
-  bool success;
-  debugf("before switch %d", request.method);
+  bool success = false;
   switch (request.method) {
   case HTTP_DELETE:
     success = requestDelete(request, response);
@@ -30,38 +29,45 @@ void HttpEndpoint::requestDispatcher(HttpRequest &request,
     success = requestHead(request, response);
     break;
   case HTTP_POST:
-    debugf("post");
     success = requestPost(request, response);
     break;
   case HTTP_PUT:
     success = requestPut(request, response);
     break;
   default:
-    responseMethodNotAllowed(response);
+    success = responseMethodNotAllowed(response);
+  }
+  if (!success) {
+    response.code = HTTP_STATUS_INTERNAL_SERVER_ERROR;
   }
 }
 
 bool HttpEndpoint::requestDelete(HttpRequest &request, HttpResponse &response) {
   responseMethodNotAllowed(response);
+  return false;
 }
 
 bool HttpEndpoint::requestGet(HttpRequest &request, HttpResponse &response) {
   responseMethodNotAllowed(response);
+  return false;
 }
 
 bool HttpEndpoint::requestHead(HttpRequest &request, HttpResponse &response) {
   responseMethodNotAllowed(response);
+  return false;
 }
 
 bool HttpEndpoint::requestPost(HttpRequest &request, HttpResponse &response) {
   responseMethodNotAllowed(response);
+  return false;
 }
 
 bool HttpEndpoint::requestPut(HttpRequest &request, HttpResponse &response) {
   responseMethodNotAllowed(response);
+  return false;
 }
 
-void HttpEndpoint::responseMethodNotAllowed(HttpResponse &response) {
+bool HttpEndpoint::responseMethodNotAllowed(HttpResponse &response) {
   response.code = HTTP_STATUS_METHOD_NOT_ALLOWED;
-  response.sendString("Method not allowed");
+  return response.sendString("Method not allowed");
 }

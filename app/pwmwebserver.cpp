@@ -33,7 +33,6 @@ void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
     response.sendString("");
     response.code = 200;
   }
-  debugf("Done");
 }
 
 std::array<int, 3> PwmWebServer::get_a_vector() {
@@ -49,14 +48,14 @@ std::array<int, 3> PwmWebServer::get_a_vector() {
 
 void PwmWebServer::init() {
   server.listen(80);
-  server.addPath("/ajax/pwm/asArray",
-                 HttpPathDelegate(&PwmWebServer::onAjaxAsArray, this));
-  server.addPath(endpointChannelCount.getEndpoint(), endpointChannelCount);
-  server.addPath(testEndpoint.getEndpoint(), testEndpoint);
-  server.addPath(endpointTest.getEndpoint(), endpointTest);
-  server.addPath(endpointSetBool.getEndpoint(), endpointSetBool);
-  server.addPath(endpointSetInt.getEndpoint(), endpointSetInt);
-  server.addPath(endpointSetString.getEndpoint(), endpointSetString);
+  server.paths.set("/ajax/pwm/asArray",
+                   HttpPathDelegate(&PwmWebServer::onAjaxAsArray, this));
+  server.paths.set(endpointChannelCount.getEndpoint(), endpointChannelCount);
+  server.paths.set(testEndpoint.getEndpoint(), testEndpoint);
+  server.paths.set(endpointTest.getEndpoint(), endpointTest);
+  server.paths.set(endpointSetBool.getEndpoint(), endpointSetBool);
+  server.paths.set(endpointSetInt.getEndpoint(), endpointSetInt);
+  server.paths.set(endpointSetString.getEndpoint(), endpointSetString);
   server.setBodyParser(ContentType::toString(MIME_JSON), bodyToStringParser);
   //	server.setDefaultHandler(onFile);
 }

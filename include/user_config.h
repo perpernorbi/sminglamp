@@ -10,7 +10,7 @@ extern "C" {
 
 // ESP SDK config
 #define LWIP_OPEN_SRC
-#define USE_US_TIMER
+//#define USE_US_TIMER
 
 // Default types
 #define __CORRECT_ISO_CPP_STDLIB_H_PROTO
@@ -18,12 +18,10 @@ extern "C" {
 #include <stdint.h>
 
 // Override c_types.h include and remove buggy espconn
-#define _C_TYPES_H_
-#define _NO_ESPCON_
+//#define _C_TYPES_H_
+//#define _NO_ESPCON_
 
-// Updated, compatible version of c_types.h
-// Just removed types declared in <stdint.h>
-#include <espinc/c_types_compatible.h>
+#include <c_types.h>
 
 // System API declarations
 #include <esp_systemapi.h>

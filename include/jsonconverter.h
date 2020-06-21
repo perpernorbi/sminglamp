@@ -3,10 +3,10 @@
 
 #include "JsonArrayStream.h"
 #include "JsonVariantStream.h"
-#include <Libraries/ArduinoJson/ArduinoJson.h>
-#include <Libraries/ArduinoJson/include/ArduinoJson/Internals/JsonParser.hpp>
-#include <Libraries/ArduinoJson/include/ArduinoJson/JsonBuffer.hpp>
-#include <SmingCore/Data/Stream/MemoryDataStream.h>
+#include <Libraries/ArduinoJson5/include/ArduinoJson.h>
+//#include <Libraries/ArduinoJson5/include/ArduinoJson/Internals/JsonParser.hpp>
+//#include <Libraries/ArduinoJson5/include/ArduinoJson/JsonBuffer.hpp>
+#include <Data/Stream/MemoryDataStream.h>
 #include <cstdlib>
 #include <string.h>
 #include <type_traits>
@@ -37,6 +37,7 @@ template <typename T>
 ReadWriteStream *
 toJson(const T &value,
        typename std::enable_if<!is_iterable<T>::value>::type * = 0) {
+  debugf("Not iterable toJson");
   JsonVariant json(value);
   JsonVariantStream *stream = new JsonVariantStream(json);
   return stream;

@@ -4,7 +4,7 @@
 #include "httpendpointjsonget.h"
 #include "httpendpointjsonset.h"
 #include "pwminterface.h"
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 #include <array>
 #include <vector>
 

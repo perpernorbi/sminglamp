@@ -9,44 +9,29 @@
 #define _SMING_CORE_DATA_JSON_ARRAY_STREAM_H_
 
 #include <Data/Stream/MemoryDataStream.h>
-#include <Libraries/ArduinoJson/include/ArduinoJson.h>
-
-/** @brief JsonArray stream class
- * 	@ingroup    stream data
- *  @{
- *
- */
+#include <Libraries/ArduinoJson5/include/ArduinoJson.h>
 
 class JsonArrayStream : public MemoryDataStream {
 public:
-  /** @brief  Create a JSON object stream
-   */
   JsonArrayStream() : rootNode(buffer.createArray()) {}
 
-  virtual ~JsonArrayStream() {}
+  virtual ~JsonArrayStream() = default;
 
-  // Use base class documentation
-  virtual StreamType getStreamType() const { return eSST_JsonObject; }
+  virtual StreamType getStreamType() const override { return eSST_JsonObject; }
 
-  /** @brief  Get the JSON root node
-   *  @retval JsonObject Reference to the root node
-   */
   JsonArray &getRoot() { return rootNode; }
 
-  // Use base class documentation
-  virtual uint16_t readMemoryBlock(char *data, int bufSize);
+  virtual uint16_t readMemoryBlock(char *data, int bufSize) override;
 
-  /**
-   * @brief Return the total length of the stream
-   * @retval int -1 is returned when the size cannot be determined
-   */
-  int available() { return rootNode.success() ? rootNode.measureLength() : 0; }
+  int available() override;
+
+  bool isFinished() override;
 
 private:
+  void getData();
   DynamicJsonBuffer buffer;
   JsonArray &rootNode;
   bool send = true;
 };
 
-/** @} */
 #endif /* _SMING_CORE_DATA_JSON_ARRAY_STREAM_H_ */

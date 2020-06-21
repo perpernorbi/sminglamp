@@ -2,7 +2,7 @@
 #define PWMCHANNELANDDUTYCONSUMER_H
 
 #include <array>
-#include <espinc/c_types_compatible.h>
+#include <c_types.h>
 
 class PwmInterface {
 public:

@@ -1,6 +1,6 @@
 #ifndef HTTPENDPOINT_H
 #define HTTPENDPOINT_H
-#include <Network/Http/HttpResource.h>
+#include <Network/Http/HttpResourceTree.h>
 
 class HttpEndpoint {
 private:
@@ -24,6 +24,6 @@ protected:
   virtual bool requestPut(HttpRequest &request, HttpResponse &response);
 
 private:
-  void responseMethodNotAllowed(HttpResponse &response);
+  bool responseMethodNotAllowed(HttpResponse &response);
 };
 #endif // HTTPENDPOINT_H

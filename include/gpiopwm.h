@@ -1,7 +1,7 @@
 #ifndef GPIOPWM_H
 #define GPIOPWM_H
-#include "SmingCore/HardwarePWM.h"
 #include "pwminterface.h"
+#include <HardwarePWM.h>
 #include <user_config.h>
 
 template <uint8_t... pins_template>
@@ -17,7 +17,7 @@ private:
 
 public:
   GpioPWM() {
-    HW_pwm = new HardwarePWM(pins.data(), pins.size());
+    HW_pwm = new HardwarePWM(const_cast<uint8_t *>(pins.data()), pins.size());
     HW_pwm->setPeriod(102);
     debugf("pwm initialized. Max duty: %d", HW_pwm->getMaxDuty());
     for (auto &pinNumber : pins)

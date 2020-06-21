@@ -18,6 +18,7 @@ private:
 protected:
   virtual bool requestHead(HttpRequest &request,
                            HttpResponse &response) override {
+    debugf("requestHead");
     if (!callback)
       return false;
     response.code = HTTP_STATUS_OK;
@@ -27,10 +28,10 @@ protected:
 
   virtual bool requestGet(HttpRequest &request,
                           HttpResponse &response) override {
+    debugf("requestGet");
     const T &value = callback();
     auto *jsonStream = JsonConverter::toJson<T>(value);
-    response.sendDataStream(jsonStream);
-    return true;
+    return response.sendDataStream(jsonStream);
   }
 };
 #endif // HTTPENDPOINTJSONGET_H
