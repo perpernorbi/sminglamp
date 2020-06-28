@@ -12,9 +12,10 @@ public:
   virtual uint8 getChannelCount() const = 0;
 };
 
-template <size_t channelCount> class PwmArrayInterface {
+template <size_t channelCount, typename duty_t = uint32>
+class PwmArrayInterface {
 public:
-  using State = std::array<uint32, channelCount>;
+  using State = std::array<duty_t, channelCount>;
   virtual ~PwmArrayInterface() {}
   virtual void setDuty(const State &state) = 0;
   virtual State getDuty() = 0;

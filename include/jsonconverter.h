@@ -37,7 +37,6 @@ template <typename T>
 ReadWriteStream *
 toJson(const T &value,
        typename std::enable_if<!is_iterable<T>::value>::type * = 0) {
-  debugf("Not iterable toJson");
   JsonVariant json(value);
   JsonVariantStream *stream = new JsonVariantStream(json);
   return stream;
@@ -49,10 +48,8 @@ toJson(const T &value,
        typename std::enable_if<is_iterable<T>::value>::type * = 0) {
   JsonArrayStream *jsonArrayStream = new JsonArrayStream;
   auto &root = jsonArrayStream->getRoot();
-  for (const auto &i : value) {
+  for (const auto &i : value)
     root.add(i);
-    debugf("toJson %d", i);
-  }
   return jsonArrayStream;
 }
 

@@ -8,6 +8,7 @@ include/httpendpoint.h
 include/httpendpointjsonget.h
 include/httpendpointjsonset.h
 include/jsonconverter.h
+include/ws2812pwm.h
 temp
 app/main.cpp
 app/pwmwebserver.cpp

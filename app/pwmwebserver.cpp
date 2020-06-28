@@ -17,7 +17,6 @@ PwmWebServer::PwmWebServer(PwmInterface &pwm)
 }
 
 void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
-  debugf("start");
   if (request.method == HTTP_GET) {
     auto *jsonArrayStream = new JsonArrayStream();
     auto &array = jsonArrayStream->getRoot();
@@ -25,7 +24,7 @@ void PwmWebServer::onAjaxAsArray(HttpRequest &request, HttpResponse &response) {
       array.add(pwm.getDuty(i));
     response.sendDataStream(jsonArrayStream, ContentType::toString(MIME_JSON));
   } else if (request.method == HTTP_POST) {
-    StaticJsonBuffer<200> jsonBuffer;
+    StaticJsonBuffer<4096> jsonBuffer;
     auto &root = jsonBuffer.parseArray(request.getBody());
     for (size_t i = 0; i < root.size(); ++i) {
       pwm.setDuty(i, static_cast<uint32>(root[i]));
